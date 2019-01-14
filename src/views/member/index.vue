@@ -4,7 +4,7 @@
       <span class="m-part-title-icon"></span>
       <span>用户列表</span>
     </h3>
-    <div class="m-search-box">
+    <div class="m-search-box m-flex-between">
       <div>
         <el-input v-model="user_email" class="m-search-input" placeholder="搜索用户账号"></el-input>
         <el-autocomplete
@@ -18,6 +18,9 @@
             <span class="m-btn-icon m-search"></span>
             <span>搜索</span>
           </span>
+      </div>
+      <div>
+        <a href="https://hindigo.lkfcni.cn/api/v1/user/export_xls" class="m-down-btn">导出excel</a>
       </div>
     </div>
     <div class="m-content">
@@ -47,6 +50,7 @@
         <div>
           <!--<el-checkbox v-model="checked">全选</el-checkbox>-->
           <!--<span class="m-check-alert">送积分</span>-->
+
         </div>
         <pagination :total="total_page" @pageChange="pageChange"></pagination>
       </div>
@@ -130,5 +134,12 @@
 </script>
 
 <style lang="less" rel="stylesheet/less" scoped>
-
+.m-down-btn{
+  display: inline-block;
+  padding: 8px 20px;
+  border: 1px solid #97ADCB;
+  border-radius: 5px;
+  text-decoration:none;
+  color: #97ADCB;
+}
 </style>
