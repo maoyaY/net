@@ -231,8 +231,8 @@
                 <span><i class="icon-person-navbar icon"></i></span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="passward">修改密码</el-dropdown-item>
-                  <el-dropdown-item command="admin">管理员管理</el-dropdown-item>
-                  <el-dropdown-item command="approve">切换中英文(ENGLISH)</el-dropdown-item>
+                  <el-dropdown-item command="admin" v-if="stateType != 77">管理员管理</el-dropdown-item>
+                  <!--<el-dropdown-item command="approve">切换中英文(ENGLISH)</el-dropdown-item>-->
                   <el-dropdown-item command="exit" divided>退出</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
@@ -308,8 +308,92 @@
         components: {},
 
         computed: {
-            ...mapState(['menu']),
+            // ...mapState(['menu']),
+            menu(){
+              let _menu = [];
+                if(localStorage.getItem('user_type') == 77){
+                  _menu = [{
+                    title:"概况",
+                    path:"/profile",
+                    iconPath: 'icon-profile-side'
+                  }]
+                }else{
+                  _menu = [
+                    {
+                      title:"概况",
+                      path:"/profile",
+                      iconPath: 'icon-profile-side'
+                    },
+                    {
+                      title:"用户",
+                      path:"/member",
+                      iconPath: 'icon-member-side'
+                    },
+                    {
+                      title:"商品",
+                      path:"/product",
+                      iconPath: 'icon-product-side'
+                    },
+                    {
+                      title:"订单",
+                      path:"/order",
+                      iconPath: 'icon-order-side'
+                    },
+                    {
+                      title:"优惠",
+                      path:"/discounts",
+                      iconPath: 'icon-discounts-side',
+                      children: [
+                        {
+                          title: '优惠券',
+                          path: 'index'
+                        },
+                        {
+                          title: '用户优惠券',
+                          path: 'coupon'
+                        }
+                      ]
+                    },
+                    {
+                      title:"图文",
+                      path:"/imageText",
+                      iconPath: 'icon-imageText-side',
+                      children: [
+                        {
+                          title: '健康服务',
+                          path: 'tweet'
+                        }
+                      ]
+                    },
+                    {
+                      title:"页面",
+                      path:"/page",
+                      iconPath: 'icon-page-side'
+                    },
 
+                    {
+                      title:"配置",
+                      path:"/set",
+                      iconPath: 'icon-set-side',
+                      children: [
+                        {
+                          title: '配置设置',
+                          path: 'index'
+                        },
+                        {
+                          title: '网站信息',
+                          path: 'activity'
+                        }
+                      ]
+                    }
+
+                  ];
+                }
+                return _menu;
+            },
+            stateType(){
+              return localStorage.getItem('user_type');
+            },
             menuList(){
                 let menuList = [];
 
@@ -346,7 +430,6 @@
             //
             defaultPage() {
                 let firstLevelPath = '/' + this.$route.path.split('/')[1];
-                console.log(firstLevelPath,'adasd')
                 // if(firstLevelPath != '/admin'){
                   return this.menu.find(menu => menu.path == firstLevelPath);
                 // }
@@ -418,6 +501,17 @@
               this.$router.push('/admin');
             } else if(command == 'approve'){
               this.$router.push('/approveManage');
+            } else if(command == 'exit'){
+              this.$confirm('确定要退出当前登录吗?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                this.$router.push('/');
+                localStorage.removeItem('user_type');
+              }).catch(() => {
+              });
+
             }
           },
           modalClick(e){

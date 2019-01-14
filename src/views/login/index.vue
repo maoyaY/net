@@ -83,13 +83,21 @@
               if(res.data.status == 200){
                 // this.$store.state.side = res.data.data.side;
                 // this.$store.state.role = res.data.data.admin;
-                this.$store.state.user_type = res.data.data.user_type;
+                // this.$store.state.user_type = res.data.data.user_type;
                 // localStorage.setItem('token', res.data.data.token);
                 // if(res.data.data.MAidentity.indexOf('管理员') != -1){
                 //   this.$router.push({ path: '/index/adminIndex' });
                 // }else{
                 //   this.$router.push({ path: '/index/userIndex' });
                 // }
+                localStorage.setItem('user_type',res.data.data.user_type);
+                if(res.data.data.user_type == 77){
+                  this.$store.state.menu = [{
+                    title:"概况",
+                    path:"/profile",
+                    iconPath: 'icon-profile-side'
+                  }]
+                }
                 this.$router.push({ path: '/profile' });
               }else{
                 this.$message.error(res.data.message);

@@ -17,6 +17,20 @@
         <span class="m-part-title-icon"></span>
         <span>交易数据</span>
       </h3>
+
+      <div class="m-search-box ">
+        <div>
+          <el-date-picker
+            v-model="value4"
+            type="month"
+            placeholder="选择月">
+          </el-date-picker>
+          <span class="m-btn m-search-btn" @click="getUser(page_info.page_num)">
+            <span class="m-btn-icon m-search"></span>
+            <span>搜索</span>
+          </span>
+        </div>
+      </div>
       <ul class="m-order-label-ul">
         <li>
           <div class="m-icon-price-box">
@@ -29,7 +43,13 @@
           <p class="m-order-bottom">
             <span>昨日</span>
             <span>${{detail_info.sale_yesteday}}
-            <!--<span class="m-order-up"></span>-->
+              <!--<span class="m-order-up"></span>-->
+            </span>
+          </p>
+          <p class="m-order-bottom">
+            <span>当月</span>
+            <span>${{detail_info.price_tomonth}}
+              <!--<span class="m-order-up"></span>-->
             </span>
           </p>
           <p class="m-order-all">
@@ -51,6 +71,12 @@
             <!--<span class="m-order-up m-down"></span>-->
             </span>
           </p>
+          <p class="m-order-bottom">
+            <span>当月</span>
+            <span>{{detail_info.order_tomonth}}
+              <!--<span class="m-order-up"></span>-->
+            </span>
+          </p>
           <p class="m-order-all">
             <span>全部订单数</span>
             <span >{{detail_info.yesteday_order}}</span>
@@ -68,6 +94,31 @@
             <span>昨日</span>
             <span >{{detail_info.yesteday_user}}</span>
           </p>
+          <p class="m-order-bottom">
+            <span>当月新增</span>
+            <span>{{detail_info.user_tomonth}}
+              <!--<span class="m-order-up"></span>-->
+            </span>
+          </p>
+        </li>
+        <li>
+          <div class="m-icon-price-box">
+            <span class="m-icon m-order-pay"></span>
+            <div>
+              <p>下单用户人数</p>
+              <p class="m-order-price">{{detail_info.make_order_user}}</p>
+            </div>
+          </div>
+          <!--<p class="m-order-bottom">-->
+            <!--<span>昨日</span>-->
+            <!--<span >{{detail_info.yesteday_user}}</span>-->
+          <!--</p>-->
+          <p class="m-order-bottom">
+            <span>当月</span>
+            <span>{{detail_info.make_order_user_tomonth}}
+              <!--<span class="m-order-up"></span>-->
+            </span>
+          </p>
         </li>
       </ul>
     </div>
@@ -79,7 +130,8 @@
     export default {
         data(){
           return{
-            detail_info:null
+            detail_info:null,
+            value4:''
           }
         },
        components:{
@@ -147,7 +199,7 @@
   .m-order-label-ul{
     .flex-row(flex-start);
     border: 1px solid @borderColor;
-    width: 80%;
+    width: 90%;
     margin: 0.3rem 0;
     /*height: 190px;*/
     li{
