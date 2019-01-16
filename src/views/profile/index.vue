@@ -23,9 +23,10 @@
           <el-date-picker
             v-model="value4"
             type="month"
+            value-format="yyyy-MM"
             placeholder="选择月">
           </el-date-picker>
-          <span class="m-btn m-search-btn" @click="getUser(page_info.page_num)">
+          <span class="m-btn m-search-btn" @click="getInfo">
             <span class="m-btn-icon m-search"></span>
             <span>搜索</span>
           </span>
@@ -86,8 +87,8 @@
           <div class="m-icon-price-box">
             <span class="m-icon m-order-pay"></span>
             <div>
-              <p>用户人数</p>
-              <p class="m-order-price">{{detail_info.user_num}}</p>
+              <p>今日用户人数</p>
+              <p class="m-order-price">{{detail_info.today_user}}</p>
             </div>
           </div>
           <p class="m-order-bottom">
@@ -95,50 +96,125 @@
             <span >{{detail_info.yesteday_user}}</span>
           </p>
           <p class="m-order-bottom">
-            <span>当月新增</span>
+            <span>当月</span>
             <span>{{detail_info.user_tomonth}}
               <!--<span class="m-order-up"></span>-->
             </span>
+          </p>
+          <p class="m-order-all">
+            <span>全部用户数</span>
+            <span class="m-order-price">{{detail_info.user_num}}</span>
           </p>
         </li>
         <li>
           <div class="m-icon-price-box">
             <span class="m-icon m-order-pay"></span>
             <div>
-              <p>下单用户人数</p>
-              <p class="m-order-price">{{detail_info.make_order_user}}</p>
+              <p>今日下单用户人数</p>
+              <p class="m-order-price">{{detail_info.make_order_user_today}}</p>
             </div>
           </div>
-          <!--<p class="m-order-bottom">-->
-            <!--<span>昨日</span>-->
-            <!--<span >{{detail_info.yesteday_user}}</span>-->
-          <!--</p>-->
+          <p class="m-order-bottom">
+            <span>昨日</span>
+            <span >{{detail_info.make_order_user_yesteday}}</span>
+          </p>
           <p class="m-order-bottom">
             <span>当月</span>
             <span>{{detail_info.make_order_user_tomonth}}
               <!--<span class="m-order-up"></span>-->
             </span>
           </p>
+          <p class="m-order-all">
+            <span>全部下单用户数</span>
+            <span class="m-order-price">{{detail_info.make_order_user}}</span>
+          </p>
         </li>
       </ul>
+
+
+      <h3 class="m-part-title">
+        <span class="m-part-title-icon"></span>
+        <span>商品数据</span>
+      </h3>
+
+      <div class="m-search-box ">
+        <div>
+          <el-date-picker
+            v-model="product_params.time_get"
+            type="month"
+            value-format="yyyy-MM"
+            placeholder="选择月">
+          </el-date-picker>
+          <el-input v-model="product_params.product_name" class="m-search-input" placeholder="请输入商品名称"></el-input>
+          <el-input v-model="product_params.tab_name" class="m-search-input" placeholder="请输入标签名称"></el-input>
+          <span class="m-btn m-search-btn" @click="getProduct">
+            <span class="m-btn-icon m-search"></span>
+            <span>搜索</span>
+          </span>
+        </div>
+      </div>
+      <el-table
+        :data="product_data"
+        style="width: 100%">
+        <el-table-column
+          prop="productsale_name"
+          label="商品名称"
+         >
+        </el-table-column>
+        <el-table-column
+          prop="productsale_tagname"
+          label="标签"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="productsale_salenum"
+          label="销量"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="productsale_saleprice"
+          label="销售额"
+        >
+        </el-table-column>
+      </el-table>
+
+      <div class="m-bottom m-flex-between">
+        <div>
+          <!--<el-checkbox v-model="checked">全选</el-checkbox>-->
+          <!--<span class="m-check-alert">送积分</span>-->
+
+        </div>
+        <pagination :total="total_page" @pageChange="pageChange"></pagination>
+      </div>
     </div>
 </template>
 
 <script>
   import axios from 'axios';
   import api from '../../api/api';
+  import Pagination from "../../components/common/page";
     export default {
         data(){
           return{
             detail_info:null,
-            value4:''
+            value4:'',
+            product_params:{
+              time_get:'',
+              product_name:'',
+              tab_name:'',
+              page_num:1,
+              page_size:10
+            },
+            product_data:[],
+            total_page:0
           }
         },
-       components:{
-
-       },
+      components:{
+        Pagination
+      },
       mounted(){
           this.getInfo();
+          this.getProduct();
       },
       methods:{
           changeRoute(v){
@@ -150,7 +226,21 @@
               this.detail_info = res.data.data;
             }
           })
-        }
+        },
+        getProduct(){
+            axios.get(api.get_product_sale,{
+              params:this.product_params
+            }).then(res => {
+              if(res.data.status == 200){
+                this.product_data = res.data.data;
+                this.total_page = res.data.total_page;
+              }
+            })
+        },
+        pageChange(num){
+          this.getProduct();
+          this.product_params.page_num = num;
+        },
       }
     }
 </script>

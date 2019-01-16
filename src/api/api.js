@@ -69,6 +69,7 @@ const api={
   delete_questoutline: title + 'qa/delete_questoutline',//删除问题分类
   delete_question: title + 'qa/delete_question',//删除问题
   upload_file: title + 'file/upload',//上传图片
+  get_product_sale: title + 'config/get_product_sale',//历史商品数据
 
 }
 

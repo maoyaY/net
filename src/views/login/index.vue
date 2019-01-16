@@ -96,9 +96,19 @@
                     title:"概况",
                     path:"/profile",
                     iconPath: 'icon-profile-side'
+                  }];
+                  this.$router.push({ path: '/profile' });
+                } else if(res.data.data.user_type == 88){
+                  this.$store.state.menu = [{
+                    title:"订单",
+                    path:"/order",
+                    iconPath: 'icon-order-side'
                   }]
+                  this.$router.push({ path: '/order' });
+                }else{
+                  this.$router.push({ path: '/profile' });
                 }
-                this.$router.push({ path: '/profile' });
+
               }else{
                 this.$message.error(res.data.message);
               }

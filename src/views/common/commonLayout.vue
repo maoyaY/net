@@ -231,7 +231,7 @@
                 <span><i class="icon-person-navbar icon"></i></span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="passward">修改密码</el-dropdown-item>
-                  <el-dropdown-item command="admin" v-if="stateType != 77">管理员管理</el-dropdown-item>
+                  <el-dropdown-item command="admin" v-if="stateType != 77 && stateType != 88 ">管理员管理</el-dropdown-item>
                   <!--<el-dropdown-item command="approve">切换中英文(ENGLISH)</el-dropdown-item>-->
                   <el-dropdown-item command="exit" divided>退出</el-dropdown-item>
                 </el-dropdown-menu>
@@ -317,7 +317,14 @@
                     path:"/profile",
                     iconPath: 'icon-profile-side'
                   }]
-                }else{
+                }else if(localStorage.getItem('user_type') == 88){
+                _menu = [{
+                  title:"订单",
+                  path:"/order",
+                  iconPath: 'icon-order-side'
+                }]
+              }
+                else{
                   _menu = [
                     {
                       title:"概况",
