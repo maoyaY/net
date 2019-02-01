@@ -52,11 +52,11 @@ const api={
   items_list: title + 'items/list',//获取标签
   create_product: title +'product/create',//添加商品
 
-
   get_order_situation: title + 'order/get_order_situation',//获取订单概况
   get_all_order: title + 'order/list',//获取所有订单
   get_order_by_LOid: title + 'order/get',//获取订单详情
-  order_count: title +'order/count',//获取订单数量
+
+order_count: title +'order/count',//获取订单数量
   get_omfilter: title + 'order/get_omfilter',//获取订单filter
   update_order_status: title + 'order/update_order_status',//更新订单状态
 

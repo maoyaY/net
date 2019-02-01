@@ -229,7 +229,8 @@
                 <div style="height: 0.3rem">用户已取消订单</div>
               </div>
               <div v-if="order.ordermain_status=='未支付'">
-                <div style="height: 0.3rem">等待用户支付</div>
+                <!--<div style="height: 0.3rem">用户已支付</div>-->
+                <el-button class="right-button" @click="havePay">用户已支付</el-button>
               </div>
               <div v-if="order.ordermain_status=='支付中'">
                 <div style="height: 0.3rem">等待支付款项到账</div>
@@ -472,6 +473,32 @@
           }
         }, res=>{
           this.$message.error(res.data.message);
+        });
+      },
+    //  用户已支付
+      havePay(){
+        this.$confirm('确定此订单已经支付?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let params = {
+            ordermain_id: this.omid,
+          }
+          axios.post(api.update_order + '?status=4' ,params).then(res=>{
+            if(res.data.status == 200){
+              this.order.ordermain_status = '已支付'
+              this.orderStatus = this.order.ordermain_status;
+              this.setStep()
+              this.$message({ message: res.data.message, type: 'success' });
+            }else{
+              this.$message.error(res.data.message);
+            }
+          }, res=>{
+            this.$message.error(res.data.message);
+          });
+        }).catch(() => {
+
         });
       }
     },

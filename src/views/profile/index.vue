@@ -18,20 +18,20 @@
         <span>交易数据</span>
       </h3>
 
-      <div class="m-search-box ">
-        <div>
-          <el-date-picker
-            v-model="value4"
-            type="month"
-            value-format="yyyy-MM"
-            placeholder="选择月">
-          </el-date-picker>
-          <span class="m-btn m-search-btn" @click="getInfo">
-            <span class="m-btn-icon m-search"></span>
-            <span>搜索</span>
-          </span>
-        </div>
-      </div>
+      <!--<div class="m-search-box ">-->
+        <!--<div>-->
+          <!--<el-date-picker-->
+            <!--v-model="value4"-->
+            <!--type="month"-->
+            <!--value-format="yyyy-MM"-->
+            <!--placeholder="选择月">-->
+          <!--</el-date-picker>-->
+          <!--<span class="m-btn m-search-btn" @click="getInfo">-->
+            <!--<span class="m-btn-icon m-search"></span>-->
+            <!--<span>搜索</span>-->
+          <!--</span>-->
+        <!--</div>-->
+      <!--</div>-->
       <ul class="m-order-label-ul">
         <li>
           <div class="m-icon-price-box">
