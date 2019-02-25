@@ -100,7 +100,7 @@
                   this.$router.push({ path: '/profile' });
                 } else if(res.data.data.user_type == 88){
                   this.$store.state.menu = [{
-                    title:"订单",
+                    title:"order",
                     path:"/order",
                     iconPath: 'icon-order-side'
                   }]

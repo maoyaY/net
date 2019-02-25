@@ -18,23 +18,23 @@
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="订单号" prop="ordermain_no" width="320">
+      <el-table-column align="center" label="Order No." prop="ordermain_no" width="320">
       </el-table-column>
-      <el-table-column align="center" label="订单状态" prop="omstatus_zh" width="100">
+      <el-table-column align="center" label="Order Status" prop="omstatus_zh" width="120">
       </el-table-column>
-      <el-table-column align="center" label="订单价格" prop="ordermain_price" width="90">
+      <el-table-column align="center" label="Order Price" prop="ordermain_price" width="120">
       </el-table-column>
-      <el-table-column align="center" label="收件人" prop="ordermain_name" width="90">
+      <el-table-column align="center" label="Recipient" prop="ordermain_name" width="90">
       </el-table-column>
-      <el-table-column align="center" label="收件人联系方式" prop="ordermain_telphone" width="120">
+      <el-table-column align="center" label="Recipient Contact" prop="ordermain_telphone" width="150">
       </el-table-column>
-      <el-table-column align="center" label="下单时间" prop="ordermain_createtime" width="200">
+      <el-table-column align="center" label="Order Time" prop="ordermain_createtime" width="200">
       </el-table-column>
       <el-table-column align="center" label="订单备注" prop="ordermain_message">
       </el-table-column>
-      <el-table-column align="center" label="操作" width="150" fixed="right">
+      <el-table-column align="center" label="Operate" width="150" fixed="right">
         <template slot-scope="scope">
-          <span class="m-table-link" @click="orderDetails(scope.row)">详情</span>
+          <span class="m-table-link" @click="orderDetails(scope.row)">Detail</span>
           <!--<span class="m-table-link">退款</span>-->
         </template>
       </el-table-column>

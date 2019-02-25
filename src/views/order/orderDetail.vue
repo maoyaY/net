@@ -3,11 +3,11 @@
     <h3 class="m-part-title m-flex-between">
         <span>
            <span class="m-part-title-icon"></span>
-           <span>订单详情</span>
+           <span>Order Detail</span>
         </span>
       <span class="m-excel-btn" @click="getPdf()">
         <span class="m-icon-make-report"></span>
-        <span>生成报表</span>
+        <span>Print Order</span>
       </span>
     </h3>
     <div class="m-order-excel" id="pdfDom">
@@ -108,26 +108,26 @@
       <div class="m-flex-between">
         <div class="details-middle-left">
           <div class="m-step-part">
-            <h4>订单详情</h4>
+            <h4>Order Detail</h4>
             <ul class="m-order-detail-text">
               <li>
-                <span class="m-order-label">订单编号：</span>
+                <span class="m-order-label">Order No.：</span>
                 <span>{{order.ordermain_no}}</span>
               </li>
               <li>
-                <span class="m-order-label">买家：</span>
+                <span class="m-order-label">Buyer：</span>
                 <span>{{order.ordermain_name}}</span>
               </li>
               <li>
-                <span class="m-order-label">配送方式：</span>
+                <span class="m-order-label">Delivery Mode：</span>
                 <span>EMS</span>
               </li>
+              <!--<li>-->
+                <!--<span class="m-order-label">收货信息：</span>-->
+                <!--<span>{{order.ordermain_address}}</span>-->
+              <!--</li>-->
               <li>
-                <span class="m-order-label">收货信息：</span>
-                <span>{{order.ordermain_address}}</span>
-              </li>
-              <li>
-                <span class="m-order-label">买家留言：</span>
+                <span class="m-order-label">Delivery Mode：</span>
                 <span>{{order.ordermain_message}}</span>
               </li>
               <li>
@@ -135,7 +135,7 @@
                 <span>{{order.ordermain_englishmessage}}</span>
               </li>
               <li>
-                <el-button class="right-button dialog-footer"  slot="footer" style="background-color: #7B95B8;color: #fff;" @click="messageShow = true">英文备注</el-button>
+                <el-button class="right-button dialog-footer"  slot="footer" style="background-color: #7B95B8;color: #fff;" @click="messageShow = true">Buyer Message</el-button>
                 <el-dialog  :visible.sync="messageShow" title="添加英文备注" width="6rem">
                   <div>
                     <el-input v-model="ordermain_englishname"  placeholder="请输入英文名称"></el-input>
@@ -160,7 +160,7 @@
             <div class="right-top-top">
               <div class="left-icon"><img src="../../assets/images/toSend.png" height="50"/></div>
               <div class="right-text">
-                <div class="right-top">订单状态：{{orderStatus}}</div>
+                <div class="right-top">Order Status ：{{orderStatus}}</div>
                 <!--<div class="right-bottom">{{reminder}}</div>-->
               </div>
             </div>
@@ -267,21 +267,21 @@
 
       <div class="details-bottom">
         <el-table class="details-table" :data="order.sku_list" border style="width: 100%" stripe size="mini">
-          <el-table-column align="center" prop="sku_pic" label="商品图片">
+          <el-table-column align="center" prop="sku_pic" label="Product Picture">
             <template slot-scope="scope">
               <img  :src="scope.row.sku_pic" alt="" style="width: 0.5rem;height: 0.5rem">
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="products_name" label="商品名称">
+          <el-table-column align="center" prop="products_name" label="Product Name">
           </el-table-column>
-          <el-table-column align="center"  label="商品规格">
+          <el-table-column align="center"  label="Product Specification">
             <template slot-scope="scope">
               <span>{{scope.row.sku_detail}}</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="sku_price" label="单价">
+          <el-table-column align="center" prop="sku_price" label="Price">
           </el-table-column>
-          <el-table-column align="center" prop="product_num" label="数量">
+          <el-table-column align="center" prop="product_num" label="Amount">
           </el-table-column>
         </el-table>
       </div>
@@ -536,7 +536,7 @@
               margin-bottom: 0.1rem;
               .m-order-label{
                 display: inline-block;
-                width: 0.8rem;
+                width: 1.5rem;
                 text-align: right;
               }
             }

@@ -27,7 +27,7 @@ let store= new Vuex.Store({
         iconPath: 'icon-product-side'
       },
       {
-        title:"订单",
+        title:"order",
         path:"/order",
         iconPath: 'icon-order-side'
       },

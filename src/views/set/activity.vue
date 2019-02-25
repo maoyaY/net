@@ -10,11 +10,30 @@
 
       <div class="m-content">
         <div class="edit_container">
-          <quill-editor v-model="select_value"
+          <quill-editor v-if="select.tabs_name == '合作伙伴'"
+            v-model="select_value"
                         ref="myQuillEditor"
                         class="editer"
                         :options="editorOption" @ready="onEditorReady($event)">
           </quill-editor>
+            <div class="m-up-img-box" v-else>
+              <div class="inputbg m-img-xl el-upload-list--picture-card" v-if="select_value">
+
+                <img :src="select_value"   style="width: 3.2rem;height:1.2rem;"/>
+                <span class="el-upload-list__item-actions">
+                      <span class="el-upload-list__item-preview" @click="CardPreviewMain">
+                        <i class="el-icon-zoom-in"></i>
+                      </span>
+                      <span class="el-upload-list__item-delete" @click="imgRemoveMain">
+                        <i class="el-icon-delete"></i>
+                      </span>
+                    </span>
+              </div>
+              <div class="inputbg m-img-xl"><span>+添加图片</span><input type="file" id="main" accept="image/*" @change="imgUploadDetailMain"></div>
+            </div>
+            <el-dialog :visible.sync="dialogVisible">
+              <img width="100%"  :src="imageUrl" >
+            </el-dialog>
         </div>
         <div class="m-form-btn-box">
           <span class="m-form-btn active" @click="submitSure">确定</span>
@@ -76,7 +95,9 @@
               tabs_name:'购物保障',
               value:'buyer_set',
               active:true
-            }
+            },
+            imageUrl:'',
+            dialogVisible:false
           }
         },
       components:{
@@ -141,7 +162,48 @@
         cancelValue(){
 
           this.select_value = this.all_value;
-        }
+        },
+        /*商品主图片删除*/
+        imgRemoveMain(index){
+          this.select_value = '';
+          var file = document.getElementById('main');
+          file.value ='';
+        },
+        /*商品主图片大图显示*/
+        CardPreviewMain(index){
+          this.imageUrl =  this.select_value;
+          this.dialogVisible = true;
+        },
+        /*商品主图片上传重定向*/
+        imgUploadDetailMain(event,index){
+          if(this.select_value.length > 0){
+            this.$message({
+              type:'warning',
+              message:'一个类型只能上传1张照片'
+            });
+            return false;
+          }
+          let form = new FormData();
+          form.append("file", event.target.files[0]);
+          form.append("FileType", 'pic');
+          axios.post(api.upload_files ,form).then(res => {
+            if(res.data.status == 200){
+              this.select_value = res.data.data;
+              var file = document.getElementById('main');
+              file.value ='';
+            }else{
+              this.$message({
+                type: 'error',
+                message: '服务器请求失败，请稍后再试 '
+              });
+            }
+          },error =>{
+            this.$message({
+              type: 'error',
+              message: '服务器请求失败，请稍后再试 '
+            });
+          })
+        },
       }
     }
 </script>
@@ -151,5 +213,72 @@
     .m-part-title{
       margin-bottom: 0.2rem;
     }
+  }
+  .el-upload-list--picture-card .el-upload-list__item-actions:hover {
+    opacity: 1;
+  }
+  .m-up-img-box{
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: flex-start;
+    .el-upload-list__item-actions {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      cursor: default;
+      text-align: center;
+      color: #fff;
+      opacity: 0;
+      font-size: 20px;
+      background-color: rgba(0,0,0,.5);
+      -webkit-transition: opacity .3s;
+      transition: opacity .3s;
+      border-radius: 6px;
+      display: flex;
+      flex-flow: row;
+      align-items: center;
+      justify-content: center;
+      span {
+        cursor: pointer;
+      }
+    }
+  }
+  .inputbg{
+    margin-left: 10px;
+    color: #97ADCB;
+    border: 1px solid #eeeeee;
+    background-color: #fbfdff;
+    border-radius: 6px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: relative;
+    width: 3.2rem;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    text-align: center;
+    &.m-img-l{
+      width: 3.1rem;
+      height: 1.1rem;
+      line-height: 1.1rem;
+      input{
+        width: 3.1rem;
+        height: 1.1rem;
+        line-height: 1.1rem;
+      }
+    }
+  }
+  .inputbg input{
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity:0;
+    filter:alpha(opacity=0);
+    width: 3.2rem;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    cursor: pointer;
   }
 </style>

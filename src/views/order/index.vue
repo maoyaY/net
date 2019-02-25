@@ -3,32 +3,32 @@
     <h3 class="m-part-title">
         <span>
            <span class="m-part-title-icon"></span>
-           <span>订单管理</span>
+           <span>Orders Management</span>
         </span>
     </h3>
     <div class="all-order-content" >
       <div class="all-order-search m-flex-between">
         <div class="m-search-input-box">
           <div>
-            <el-input v-model="form.ordermain_no" class="m-input-xs" placeholder="订单编号"></el-input>
+            <el-input v-model="form.ordermain_no" class="m-input-xs" placeholder="Order No"></el-input>
             <el-date-picker
               v-model="form.ordermain_paytime"
               type="date"
               value-format="yyyy-MM-dd"
-              placeholder="下单时间">
+              placeholder="Order time">
             </el-date-picker>
           </div>
           <div class="m-mr-top">
-            <el-input v-model="form.ordermain_expressno" class="m-input-xs" placeholder="物流单号"></el-input>
-            <el-input v-model="form.ordermain_name" class="m-input-xs" placeholder="收件人"></el-input>
-            <el-input v-model="form.ordermain_telphone" class="m-input-xs" placeholder="收件人联系方式"></el-input>
+            <el-input v-model="form.ordermain_expressno" class="m-input-xs" placeholder="Logistics inquiry No."></el-input>
+            <el-input v-model="form.ordermain_name" class="m-input-xs" placeholder="Recipient"></el-input>
+            <el-input v-model="form.ordermain_telphone" class="m-input-xs" placeholder="Recipient Contact"></el-input>
           </div>
         </div>
         <div class="tr">
           <p>
             <span class="m-btn m-search-btn" @click="topSearch(1)">
               <span class="m-btn-icon m-search"></span>
-              <span>搜索</span>
+              <span>Search</span>
             </span>
           </p>
           <p class="m-mr-top">
@@ -61,7 +61,7 @@
     data() {
       return {
         name: '所有订单',
-        activeName: '全部',
+        activeName: 'All',
         form:{
           ordermain_no:'',
           ordermain_paytime:'',
@@ -85,27 +85,27 @@
         OMendTime: '',
         tabList:[
           {
-            name:'全部',
+            name:'All',
             status:''
           },
           {
-            name:'待支付',
+            name:'Unpaid',
             status:5
           },
           {
-            name:'已支付',
+            name:'Paid',
             status:10
           },
           {
-            name:'配送中',
+            name:'Delivering',
             status:15
           },
           {
-            name:'已签收',
+            name:'Received',
             status:20
           },
           {
-            name:'已完成',
+            name:'Completed',
             status:25
           },
           // {
@@ -113,11 +113,11 @@
           //   status:30
           // },
           {
-            name:'已取消',
+            name:'Canceled',
             status:-15
           },
           {
-            name:'异常订单',
+            name:'Abnormal',
             status:-99
           }
         ],

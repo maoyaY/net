@@ -319,7 +319,7 @@
                   }]
                 }else if(localStorage.getItem('user_type') == 88){
                 _menu = [{
-                  title:"订单",
+                  title:"order",
                   path:"/order",
                   iconPath: 'icon-order-side'
                 }]
