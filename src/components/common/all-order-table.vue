@@ -28,11 +28,11 @@
       </el-table-column>
       <el-table-column align="center" label="Recipient Contact" prop="ordermain_telphone" width="150">
       </el-table-column>
-      <el-table-column align="center" label="Order Time" prop="ordermain_createtime" width="200">
+      <el-table-column align="center" label="Order Time" prop="ordermain_paytime" width="200">
       </el-table-column>
-      <el-table-column align="center" label="订单备注" prop="ordermain_message">
+      <el-table-column align="center" label="Order notes" prop="ordermain_message">
       </el-table-column>
-      <el-table-column align="center" label="Operate" width="150" fixed="right">
+      <el-table-column align="center" label="Operate" width="120" fixed="right">
         <template slot-scope="scope">
           <span class="m-table-link" @click="orderDetails(scope.row)">Detail</span>
           <!--<span class="m-table-link">退款</span>-->

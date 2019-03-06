@@ -123,6 +123,7 @@
         }).then(res => {
           if(res.data.status == 200){
             this.data = res.data.data;
+            this.total_page = res.data.total_page;
           }
         })
       },

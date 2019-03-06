@@ -122,18 +122,22 @@
                 <span class="m-order-label">Delivery Mode：</span>
                 <span>EMS</span>
               </li>
-              <!--<li>-->
-                <!--<span class="m-order-label">收货信息：</span>-->
-                <!--<span>{{order.ordermain_address}}</span>-->
-              <!--</li>-->
               <li>
-                <span class="m-order-label">Delivery Mode：</span>
-                <span>{{order.ordermain_message}}</span>
+                <span class="m-order-label">收货信息：</span>
+                <span>{{order.ordermain_address}}</span>
               </li>
               <li>
-                <span class="m-order-label">英文留言：</span>
+                <span class="m-order-label">Buyer Message：</span>
                 <span>{{order.ordermain_englishmessage}}</span>
               </li>
+              <li>
+                <span class="m-order-label">留言：</span>
+                <span>{{order.ordermain_message}}</span>
+              </li>
+              <!--<li>-->
+                <!--<span class="m-order-label">英文留言：</span>-->
+                <!--<span>{{order.ordermain_englishmessage}}</span>-->
+              <!--</li>-->
               <li>
                 <el-button class="right-button dialog-footer"  slot="footer" style="background-color: #7B95B8;color: #fff;" @click="messageShow = true">Buyer Message</el-button>
                 <el-dialog  :visible.sync="messageShow" title="添加英文备注" width="6rem">
@@ -188,19 +192,19 @@
                 </div>
                 <div class="send-info">
                   <el-form :model="form" class="send-info-form">
-                    <el-form-item label="物流公司:" label-width="1.2rem">
+                    <el-form-item label="Logistics company:" label-width="1.8rem">
                       <el-select v-model="form.region" placeholder="" style="width: 1.7rem" size="small">
                         <el-option label="EMS" value="EMS"></el-option>
                       </el-select>
                     </el-form-item>
-                    <el-form-item label="快递单号:" label-width="1.2rem">
+                    <el-form-item label="express number:" label-width="1.8rem">
                       <el-input v-model="ordermain_expressno" auto-complete="off" style="width: 1.7rem" size="small"></el-input>
                     </el-form-item>
                   </el-form>
                 </div>
                 <div slot="footer" style="text-align: center;margin-bottom: 0.2rem">
-                  <el-button class="right-button" style="background-color: #fff;color: #000" @click="toSendForm = false">取 消</el-button>
-                  <el-button class="right-button" @click="toSend">确 定</el-button>
+                  <el-button class="right-button" style="background-color: #fff;color: #000" @click="toSendForm = false">Cancel</el-button>
+                  <el-button class="right-button" @click="toSend">Confirm</el-button>
                 </div>
               </el-dialog>
               <!--备注弹出框-->
@@ -211,8 +215,8 @@
                   </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
-                  <el-button class="right-button" style="background-color: #fff;color: #000" @click="memoForm = false">取 消</el-button>
-                  <el-button class="right-button" @click="memoForm = false">确 定</el-button>
+                  <el-button class="right-button" style="background-color: #fff;color: #000" @click="memoForm = false">Cancel</el-button>
+                  <el-button class="right-button" @click="memoForm = false">Confirm</el-button>
                 </div>
               </el-dialog>
               <!--显示物流信息弹出框-->
@@ -221,7 +225,7 @@
                   {{where.datetime}} {{where.remark}}
                 </div>
                 <span slot="footer" class="dialog-footer" @click="getLog">
-                <el-button class="right-button" @click="searchWhere=false">确 定</el-button>
+                <el-button class="right-button" @click="searchWhere=false">Confirm</el-button>
               </span>
               </el-dialog>
               <!--判断订单状态后显示相应的操作按钮-->
@@ -230,13 +234,13 @@
               </div>
               <div v-if="order.ordermain_status=='未支付'">
                 <!--<div style="height: 0.3rem">用户已支付</div>-->
-                <el-button class="right-button" @click="havePay">用户已支付</el-button>
+                <el-button class="right-button" @click="havePay">User has paid</el-button>
               </div>
               <div v-if="order.ordermain_status=='支付中'">
                 <div style="height: 0.3rem">等待支付款项到账</div>
               </div>
               <div v-if="order.ordermain_status=='已支付'">
-                <el-button class="right-button" @click="toSendForm=true">发 货</el-button>
+                <el-button class="right-button" @click="toSendForm=true">delivery</el-button>
                 <!--<el-button class="right-button" @click="" style="margin-left: 0.2rem;" @click="memoForm=true">备 注</el-button>-->
               </div>
               <div v-if="order.ordermain_status=='已发货' || order.ordermain_status=='配送中'">
@@ -318,7 +322,7 @@
         memoForms: {
           name: ''
         },
-        formLabelWidth: '0.6rem',
+        formLabelWidth: '1.8rem',
         total_count:0,
         ordermain_englishname:'',
         ordermain_englishmessage:''

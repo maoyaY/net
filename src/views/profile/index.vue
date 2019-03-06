@@ -68,7 +68,7 @@
           </div>
           <p class="m-order-bottom">
             <span>昨日</span>
-            <span>{{detail_info.sale_yesteday}}
+            <span>{{detail_info.yesteday_order}}
             <!--<span class="m-order-up m-down"></span>-->
             </span>
           </p>
@@ -80,7 +80,7 @@
           </p>
           <p class="m-order-all">
             <span>全部订单数</span>
-            <span >{{detail_info.yesteday_order}}</span>
+            <span >{{detail_info.order_total}}</span>
           </p>
         </li>
         <li>
