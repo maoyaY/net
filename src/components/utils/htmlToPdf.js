@@ -11,7 +11,7 @@ export default{
         logging: false,
         useCORS: true,
         allowTaint: false,
-        proxy:'http://47.104.228.112:7444/'
+        proxy:'https://hindigo.lkfcni.cn/'
       }).then(function (canvas) {
           let contentWidth = canvas.width
           let contentHeight = canvas.height

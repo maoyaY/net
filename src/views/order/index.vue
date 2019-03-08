@@ -122,7 +122,8 @@
           }
         ],
         // tabList: ['全 部', '已取消','未支付','支付中', '已支付','已发货','已收货', '已完成','已评价','退款中'],
-        index: 0
+        index: 0,
+        status_value :''
       }
     },
     components: {  allOrderTable },
@@ -147,13 +148,15 @@
         // this.tabList = ['全 部', '已取消','未支付','支付中', '已支付','已发货','已收货', '已完成','已评价','退款中']
         // tab.label含"0"则不调用接口
         // if(tab.label.indexOf("0") == -1) {
+        this.status_value = tab.$attrs.value;
           this.getData(1,tab.$attrs.value)
+
         // }
       },
       // 获取订单数据
       getData(v,status){
         let params = {
-          ordermain_status: status,
+          ordermain_status: status || this.status_value,
           page_num: v,
           page_size: this.page_size,
           // OMid: '',

@@ -20,7 +20,7 @@
       </el-table-column>
       <el-table-column align="center" label="Order No." prop="ordermain_no" width="320">
       </el-table-column>
-      <el-table-column align="center" label="Order Status" prop="omstatus_zh" width="120">
+      <el-table-column align="center" label="Order Status" prop="ordermain_status" width="120">
       </el-table-column>
       <el-table-column align="center" label="Order Price" prop="ordermain_price" width="120">
       </el-table-column>

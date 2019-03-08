@@ -109,54 +109,63 @@
         <div class="details-middle-left">
           <div class="m-step-part">
             <h4>Order Detail</h4>
-            <ul class="m-order-detail-text">
-              <li>
-                <span class="m-order-label">Order No.：</span>
-                <span>{{order.ordermain_no}}</span>
-              </li>
-              <li>
-                <span class="m-order-label">Buyer：</span>
-                <span>{{order.ordermain_name}}</span>
-              </li>
-              <li>
-                <span class="m-order-label">Delivery Mode：</span>
-                <span>EMS</span>
-              </li>
-              <li>
-                <span class="m-order-label">收货信息：</span>
-                <span>{{order.ordermain_address}}</span>
-              </li>
-              <li>
-                <span class="m-order-label">Buyer Message：</span>
-                <span>{{order.ordermain_englishmessage}}</span>
-              </li>
-              <li>
-                <span class="m-order-label">留言：</span>
-                <span>{{order.ordermain_message}}</span>
-              </li>
-              <!--<li>-->
+            <div class="m-order-text-box">
+              <ul class="m-order-detail-text">
+                <li>
+                  <span class="m-order-label">Order No.：</span>
+                  <span>{{order.ordermain_no}}</span>
+                </li>
+                <li>
+                  <span class="m-order-label">Buyer：</span>
+                  <span>{{order.ordermain_name}}</span>
+                </li>
+                <li>
+                  <span class="m-order-label">Delivery Mode：</span>
+                  <span>EMS</span>
+                </li>
+                <li>
+                  <span class="m-order-label">收货信息：</span>
+                  <span>{{order.ordermain_address}}</span>
+                </li>
+                <li>
+                  <span class="m-order-label">Buyer Message：</span>
+                  <span>{{order.ordermain_englishmessage}}</span>
+                </li>
+                <li>
+                  <span class="m-order-label">留言：</span>
+                  <span>{{order.ordermain_message}}</span>
+                </li>
+                <!--<li>-->
                 <!--<span class="m-order-label">英文留言：</span>-->
                 <!--<span>{{order.ordermain_englishmessage}}</span>-->
-              <!--</li>-->
-              <li>
-                <el-button class="right-button dialog-footer"  slot="footer" style="background-color: #7B95B8;color: #fff;" @click="messageShow = true">Buyer Message</el-button>
-                <el-dialog  :visible.sync="messageShow" title="添加英文备注" width="6rem">
-                  <div>
-                    <el-input v-model="ordermain_englishname"  placeholder="请输入英文名称"></el-input>
-                  </div>
-                  <div style="margin-top: 0.2rem;">
-                    <el-input v-model="ordermain_englishmessage"  placeholder="请输入英文地址"></el-input>
-                  </div>
+                <!--</li>-->
+                <li>
+                  <el-button class="right-button dialog-footer"  slot="footer" style="background-color: #7B95B8;color: #fff;" @click="messageShow = true">Buyer Message</el-button>
+                  <el-dialog  :visible.sync="messageShow" title="添加英文备注" width="6rem">
+                    <div>
+                      <el-input v-model="ordermain_englishname"  placeholder="请输入英文名称"></el-input>
+                    </div>
+                    <div style="margin-top: 0.2rem;">
+                      <el-input v-model="ordermain_englishmessage"  placeholder="请输入英文地址"></el-input>
+                    </div>
 
-                  <div style="margin-top: 0.2rem;text-align: right;">
-                    <el-button class="right-button"  @click="messageShow = false">取 消</el-button>
-                    <el-button class="right-button" style="background-color: #7B95B8;color: #fff;" @click="messageSure">确 定</el-button>
-                  </div>
+                    <div style="margin-top: 0.2rem;text-align: right;">
+                      <el-button class="right-button"  @click="messageShow = false">取 消</el-button>
+                      <el-button class="right-button" style="background-color: #7B95B8;color: #fff;" @click="messageSure">确 定</el-button>
+                    </div>
 
-                </el-dialog>
+                  </el-dialog>
 
-              </li>
-            </ul>
+                </li>
+              </ul>
+              <ul class="m-order-detail-text">
+                <li>
+                  <span class="m-order-label">Prescription list：</span>
+                  <img :src="order.ordermain_ethicalpic" class="m-prescription-img" alt="">
+                </li>
+
+              </ul>
+            </div>
           </div>
         </div>
         <div class="details-middle-right">
@@ -533,7 +542,14 @@
             font-size: 0.18rem;
             margin-bottom: 0.2rem;
           }
+          .m-order-text-box{
+           display: flex;
+            flex-flow: row;
+            align-items: flex-start;
+            justify-content: flex-start;
+          }
           .m-order-detail-text{
+            /*width: 50%;*/
             li{
               font-size: 0.15rem;
               color: #808080;
@@ -542,6 +558,12 @@
                 display: inline-block;
                 width: 1.5rem;
                 text-align: right;
+              }
+              .m-prescription-img{
+                display: inline-block;
+                width: 2rem;
+                height: 2rem;
+                vertical-align: top;
               }
             }
           }
