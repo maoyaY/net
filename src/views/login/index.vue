@@ -1,238 +1,332 @@
 <template>
-  <div class="login-status">
-    <!--<login-head></login-head>-->
-    <div class="login-content">
-      <div class="login-box">
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm"  >
-          <h3 class="login-head">用户登录</h3>
-          <el-form-item  prop="MAname">
-            <i class="icon-person icon"></i>
-            <el-input v-model="ruleForm.admin_name" placeholder="输入邮箱" class="m-input"></el-input>
-          </el-form-item>
-          <el-form-item  prop="MApassword">
-            <span class="icon-pwd icon"></span>
-            <el-input v-model="ruleForm.admin_password" placeholder="输入密码" type="password" class="m-input"></el-input>
-            <!--<i class="icon-pwd icon-r"></i>-->
-          </el-form-item>
+  <div class="login-container">
+    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
 
-          <el-form-item class="m-login-btn">
-            <el-button type="primary" @click="submitForm('ruleForm')">登 &nbsp;&nbsp;录</el-button>
-          </el-form-item>
-          <el-form-item >
-            <el-checkbox  name="type" v-model="ruleForm.checked">记住密码</el-checkbox>
-            <p class="m-forget-pwd" @click="forgetPwd">忘记密码？</p>
-          </el-form-item>
-        </el-form>
+      <div class="title-container">
+        <h3 class="title">Login Form</h3>
       </div>
-    </div>
 
-    <!--<foot></foot>-->
+      <el-form-item prop="username">
+        <span class="svg-container">
+          <svg-icon icon-class="user" />
+        </span>
+        <el-input
+          ref="username"
+          v-model="loginForm.username"
+          placeholder="Username"
+          name="username"
+          type="text"
+          tabindex="1"
+          autocomplete="on"
+        />
+      </el-form-item>
+
+      <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
+        <el-form-item prop="password">
+          <span class="svg-container">
+            <svg-icon icon-class="password" />
+          </span>
+          <el-input
+            :key="passwordType"
+            ref="password"
+            v-model="loginForm.password"
+            :type="passwordType"
+            placeholder="Password"
+            name="password"
+            tabindex="2"
+            autocomplete="on"
+            @keyup.native="checkCapslock"
+            @blur="capsTooltip = false"
+            @keyup.enter.native="handleLogin"
+          />
+          <span class="show-pwd" @click="showPwd">
+            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+          </span>
+        </el-form-item>
+      </el-tooltip>
+
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+
+      <div style="position:relative">
+        <div class="tips">
+          <span>Username : admin</span>
+          <span>Password : any</span>
+        </div>
+        <div class="tips">
+          <span style="margin-right:18px;">Username : editor</span>
+          <span>Password : any</span>
+        </div>
+
+        <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
+          Or connect with
+        </el-button>
+      </div>
+    </el-form>
+
+    <el-dialog title="Or connect with" :visible.sync="showDialog">
+      Can not be simulated on local, so please combine you own business simulation! ! !
+      <br>
+      <br>
+      <br>
+      <social-sign />
+    </el-dialog>
   </div>
-
 </template>
 
 <script>
-  import loginHead from '../../components/common/header';
-  import foot from '../../components/common/footer';
-  import api from '../../api/api';
-  import { MessageBox } from 'element-ui';
-  import axios from 'axios';
-  export default {
-    components:{
-      loginHead,
-      foot
-    },
-    data() {
-      return {
-        ruleForm: {
-          admin_name:'',
-          admin_password:'',
-          checked:true
-        },
-        rules: {
-          admin_name: [
-            { required: true, message: '请输入邮箱', trigger: 'blur' }
-          ],
-          admin_password: [
-            { required: true, message: '请输入密码', trigger: 'blur' }
-          ],
-        }
-      };
-    },
-    //页面加载调用获取cookie值
-    mounted() {
-      this.getCookie();
-    },
-    methods: {
-      submitForm(formName) {
-        let that = this;
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            //记住密码
-            //判断复选框是否被勾选 勾选则调用配置cookie方法
-            if (that.ruleForm.checked == true) {
-              //传入账号名，密码，和保存天数3个参数
-              that.setCookie(that.ruleForm.adname, that.ruleForm.adpassword, 7);
-            }else {
-              console.log("清空Cookie");
-              //清空Cookie
-              that.clearCookie();
-            }
-            axios.post(api.login,that.ruleForm).
-            then(res=>{
-              if(res.data.status == 200){
-                // this.$store.state.side = res.data.data.side;
-                // this.$store.state.role = res.data.data.admin;
-                // this.$store.state.user_type = res.data.data.user_type;
-                // localStorage.setItem('token', res.data.data.token);
-                // if(res.data.data.MAidentity.indexOf('管理员') != -1){
-                //   this.$router.push({ path: '/index/adminIndex' });
-                // }else{
-                //   this.$router.push({ path: '/index/userIndex' });
-                // }
-                localStorage.setItem('user_type',res.data.data.user_type);
-                if(res.data.data.user_type == 77){
-                  this.$store.state.menu = [{
-                    title:"概况",
-                    path:"/profile",
-                    iconPath: 'icon-profile-side'
-                  }];
-                  this.$router.push({ path: '/profile' });
-                } else if(res.data.data.user_type == 88){
-                  this.$store.state.menu = [{
-                    title:"order",
-                    path:"/order",
-                    iconPath: 'icon-order-side'
-                  }]
-                  this.$router.push({ path: '/order' });
-                }else{
-                  this.$router.push({ path: '/profile' });
-                }
+import { validUsername } from '@/utils/validate'
+import SocialSign from './components/SocialSignin'
 
-              }else{
-                this.$message.error(res.data.message);
-              }
-            }, res=>{
-              this.$message.error(res.data.message);
-            });
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-      },
-      //设置cookie
-      setCookie(c_name, c_pwd, exdays) {
-        let exdate = new Date(); //获取时间
-        exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays); //保存的天数
-        //字符串拼接cookie
-        window.document.cookie = "userName" + "=" + c_name + ";path=/;expires=" + exdate.toGMTString();
-        window.document.cookie = "userPwd" + "=" + c_pwd + ";path=/;expires=" + exdate.toGMTString();
-      },
-      //读取cookie
-      getCookie: function() {
-        if (document.cookie.length > 0) {
-          let arr = document.cookie.split('; '); //这里显示的格式需要切割一下自己可输出看下
-          for (let i = 0; i < arr.length; i++) {
-            let arr2 = arr[i].split('='); //再次切割
-            //判断查找相对应的值
-            if (arr2[0] == 'userName') {
-              this.ruleForm.adname = arr2[1]; //保存到保存数据的地方
-            } else if (arr2[0] == 'userPwd') {
-              this.ruleForm.adpassword = arr2[1];
-            }
-          }
-        }
-      },
-      //清除cookie
-      clearCookie: function() {
-        this.setCookie("", "", -1); //修改2值都为空，天数为负1天就好了
-      },
-      forgetPwd(){
-        this.$router.push('/forgetPwd');
+export default {
+  name: 'Login',
+  components: { SocialSign },
+  data() {
+    const validateUsername = (rule, value, callback) => {
+      if (!validUsername(value)) {
+        callback(new Error('Please enter the correct user name'))
+      } else {
+        callback()
       }
     }
+    const validatePassword = (rule, value, callback) => {
+      if (value.length < 6) {
+        callback(new Error('The password can not be less than 6 digits'))
+      } else {
+        callback()
+      }
+    }
+    return {
+      loginForm: {
+        username: 'admin',
+        password: '111111'
+      },
+      loginRules: {
+        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+      },
+      passwordType: 'password',
+      capsTooltip: false,
+      loading: false,
+      showDialog: false,
+      redirect: undefined,
+      otherQuery: {}
+    }
+  },
+  watch: {
+    $route: {
+      handler: function(route) {
+        const query = route.query
+        if (query) {
+          this.redirect = query.redirect
+          this.otherQuery = this.getOtherQuery(query)
+        }
+      },
+      immediate: true
+    }
+  },
+  created() {
+    // window.addEventListener('storage', this.afterQRScan)
+  },
+  mounted() {
+    if (this.loginForm.username === '') {
+      this.$refs.username.focus()
+    } else if (this.loginForm.password === '') {
+      this.$refs.password.focus()
+    }
+  },
+  destroyed() {
+    // window.removeEventListener('storage', this.afterQRScan)
+  },
+  methods: {
+    checkCapslock({ shiftKey, key } = {}) {
+      if (key && key.length === 1) {
+        if (shiftKey && (key >= 'a' && key <= 'z') || !shiftKey && (key >= 'A' && key <= 'Z')) {
+          this.capsTooltip = true
+        } else {
+          this.capsTooltip = false
+        }
+      }
+      if (key === 'CapsLock' && this.capsTooltip === true) {
+        this.capsTooltip = false
+      }
+    },
+    showPwd() {
+      if (this.passwordType === 'password') {
+        this.passwordType = ''
+      } else {
+        this.passwordType = 'password'
+      }
+      this.$nextTick(() => {
+        this.$refs.password.focus()
+      })
+    },
+    handleLogin() {
+      this.$refs.loginForm.validate(valid => {
+        if (valid) {
+          this.loading = true
+          this.$store.dispatch('user/login', this.loginForm)
+            .then(() => {
+              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+              this.loading = false
+            })
+            .catch(() => {
+              this.loading = false
+            })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    getOtherQuery(query) {
+      return Object.keys(query).reduce((acc, cur) => {
+        if (cur !== 'redirect') {
+          acc[cur] = query[cur]
+        }
+        return acc
+      }, {})
+    }
+    // afterQRScan() {
+    //   if (e.key === 'x-admin-oauth-code') {
+    //     const code = getQueryObject(e.newValue)
+    //     const codeMap = {
+    //       wechat: 'code',
+    //       tencent: 'code'
+    //     }
+    //     const type = codeMap[this.auth_type]
+    //     const codeName = code[type]
+    //     if (codeName) {
+    //       this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
+    //         this.$router.push({ path: this.redirect || '/' })
+    //       })
+    //     } else {
+    //       alert('第三方登录失败')
+    //     }
+    //   }
+    // }
   }
+}
 </script>
 
-<style lang="less" rel="stylesheet/less" scoped>
-  @import "../../common/css/_variate";
-.login-status{
-  height: 100%;
-  .login-content{
-    position: fixed;
-    background-color: @mainColor;
-    width: 100%;
-    height: 100%;
-    .login-box{
-      width: 3.6rem;
-       height: 4.2rem;
-      padding: 0.2rem;
-      position: absolute;
-      top: 40%;
-      right: 2.2rem;
-      background-color: #fff;
-      -webkit-transform: translate(0, -1.6rem);
-      transform: translate(0,-1.6rem);
-      border-radius: 5px;
-      .login-head{
-        margin-bottom: 0.4rem;
-        font-size: 0.25rem;
-        color: @mainColor;
-      }
-      .el-form-item{
-        vertical-align: middle;
-        position: relative;
-        /*height: 0.4rem;*/
-        .icon{
-          width: 0.25rem;
-          height: 0.25rem;
-          position: absolute;
-          display: inline-block;
-          top:0.145rem;
-          left: 0.2rem;
-          z-index: 100;
-        }
-        .icon-person{
-          background: url("../../common/images/person.png");
-          background-size: 100% 100%;
-        }
-        .icon-r{
-          width: 0.2rem;
-          height: 0.2rem;
-          position: absolute;
-          display: inline-block;
-          top:0.185rem;
-          right: 0.1rem;
-          z-index: 100;
-        }
-        .icon-pwd{
-          background: url("../../common/images/pwd.png") no-repeat ;
-          background-size: 100% 100%;
-        }
-        button{
-          width: 3.6rem;
-          height: 0.54rem;
-          text-align: center;
-          font-size: 0.2rem;
-          background-color: @btnActiveColor;
-          border-color: @btnActiveColor;
-          /*margin-top: 1rem;*/
+<style lang="scss">
+/* 修复input 背景不协调 和光标变色 */
+/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
-        }
-        .m-forget-pwd{
-          color: @greyColor;
-          /*display: inline-block;*/
-          position: absolute;
-          top:0;
-          right: 0;
-          cursor: pointer;
-        }
+$bg:#283443;
+$light_gray:#fff;
+$cursor: #fff;
+
+@supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
+  .login-container .el-input input {
+    color: $cursor;
+  }
+}
+
+/* reset element-ui css */
+.login-container {
+  .el-input {
+    display: inline-block;
+    height: 47px;
+    width: 85%;
+
+    input {
+      background: transparent;
+      border: 0px;
+      -webkit-appearance: none;
+      border-radius: 0px;
+      padding: 12px 5px 12px 15px;
+      color: $light_gray;
+      height: 47px;
+      caret-color: $cursor;
+
+      &:-webkit-autofill {
+        box-shadow: 0 0 0px 1000px $bg inset !important;
+        -webkit-text-fill-color: $cursor !important;
       }
     }
   }
 
+  .el-form-item {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    color: #454545;
+  }
 }
+</style>
 
+<style lang="scss" scoped>
+$bg:#2d3a4b;
+$dark_gray:#889aa4;
+$light_gray:#eee;
 
+.login-container {
+  min-height: 100%;
+  width: 100%;
+  background-color: $bg;
+  overflow: hidden;
+
+  .login-form {
+    position: relative;
+    width: 520px;
+    max-width: 100%;
+    padding: 160px 35px 0;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  .tips {
+    font-size: 14px;
+    color: #fff;
+    margin-bottom: 10px;
+
+    span {
+      &:first-of-type {
+        margin-right: 16px;
+      }
+    }
+  }
+
+  .svg-container {
+    padding: 6px 5px 6px 15px;
+    color: $dark_gray;
+    vertical-align: middle;
+    width: 30px;
+    display: inline-block;
+  }
+
+  .title-container {
+    position: relative;
+
+    .title {
+      font-size: 26px;
+      color: $light_gray;
+      margin: 0px auto 40px auto;
+      text-align: center;
+      font-weight: bold;
+    }
+  }
+
+  .show-pwd {
+    position: absolute;
+    right: 10px;
+    top: 7px;
+    font-size: 16px;
+    color: $dark_gray;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .thirdparty-button {
+    position: absolute;
+    right: 0;
+    bottom: 6px;
+  }
+
+  @media only screen and (max-width: 470px) {
+    .thirdparty-button {
+      display: none;
+    }
+  }
+}
 </style>
