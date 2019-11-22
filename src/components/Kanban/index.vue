@@ -5,22 +5,19 @@
     </div>
     <draggable
       :list="list"
-      v-bind="$attrs"
-      class="board-column-content"
-      :set-data="setData"
-    >
-      <div v-for="element in list" :key="element.id" class="board-item">
-        {{ element.name }} {{ element.id }}
+      :options="options"
+      class="board-column-content">
+      <div v-for="element in list" class="board-item">
+        {{element}}
       </div>
     </draggable>
   </div>
 </template>
-
 <script>
 import draggable from 'vuedraggable'
 
 export default {
-  name: 'DragKanbanDemo',
+  name: 'KanBan',
   components: {
     draggable
   },
@@ -41,24 +38,19 @@ export default {
         return []
       }
     }
-  },
-  methods: {
-    setData(dataTransfer) {
-      // to avoid Firefox bug
-      // Detail see : https://github.com/RubaXa/Sortable/issues/1012
-      dataTransfer.setData('Text', '')
-    }
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .board-column {
-  min-width: 300px;
+  width: 300px;
   min-height: 100px;
   height: auto;
   overflow: hidden;
   background: #f0f0f0;
   border-radius: 3px;
+  margin-right: 20px;
+
 
   .board-column-header {
     height: 50px;
@@ -91,7 +83,11 @@ export default {
       line-height: 54px;
       padding: 5px 10px;
       box-sizing: border-box;
-      box-shadow: 0px 1px 3px 0 rgba(0, 0, 0, 0.2);
+      box-shadow: 0px 1px 3px 0 rgba(0,0,0,0.2);
+
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
     }
   }
 }

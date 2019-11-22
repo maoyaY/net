@@ -1,45 +1,42 @@
 import Vue from 'vue'
 
-import Cookies from 'js-cookie'
+import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
-import 'normalize.css/normalize.css' // a modern alternative to CSS resets
-
-import Element from 'element-ui'
-import './styles/element-variables.scss'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+// import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 
 import '@/styles/index.scss' // global css
+import 'src/styles/myIndex.less' // global css
 
 import App from './App'
-import store from './store'
 import router from './router'
+import store from './store'
 
-import './icons' // icon
-import './permission' // permission control
-import './utils/error-log' // error log
+import '@/icons' // icon
+import '@/permission' // permission control
 
-import * as filters from './filters' // global filters
+Vue.use(ElementUI)
 
-/**
- * If you don't want to use mock-server
- * you want to use MockJs for mock api
- * you can execute: mockXHR()
- *
- * Currently MockJs will be used in the production environment,
- * please remove it before going online! ! !
- */
-import { mockXHR } from '../mock'
-if (process.env.NODE_ENV === 'production') {
-  mockXHR()
-}
+import axios from 'src/utils/myAxios';
+Vue.prototype.$http = axios;
+import api from 'src/api/api'
+Vue.prototype.$api = api;
+import echarts from 'echarts';
+Vue.prototype.$echarts = echarts;
+import VueLazyload from 'vue-lazyload'
+Vue.use(VueLazyload, {loading:"/static/images/spinner.svg" });
+import BlockTitle from "src/components/BlockTitle";
+Vue.component('block-title',BlockTitle);
 
-Vue.use(Element, {
-  size: Cookies.get('size') || 'medium' // set element-ui default size
-})
+// 引入富文本编辑器
+import VueQuillEditor from 'vue-quill-editor'
+// require styles 引入样式
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+Vue.use(VueQuillEditor)
 
-// register global utility filters
-Object.keys(filters).forEach(key => {
-  Vue.filter(key, filters[key])
-})
 
 Vue.config.productionTip = false
 
